@@ -30,7 +30,7 @@ IMPORTANT: If a user expresses thoughts of self-harm, suicide, or severe crisis,
 @st.cache_resource(show_spinner=False)
 def get_model():
     return genai.GenerativeModel(
-        model_name='gemini-1.5-flash',
+        model_name='gemini-2.0-flash',
         system_instruction=system_instruction
     )
 
