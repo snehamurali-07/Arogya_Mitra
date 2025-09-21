@@ -1,6 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 import datetime
+from PIL import Image
 
 # --- Step 1: Configuration and Initialization ---
 
@@ -58,7 +59,29 @@ def generate_creative_response(user_emotion):
 
 # --- Step 3: Streamlit Interface and Chat Logic ---
 
-st.title("🌱 Arogya-Mitra: Your Mental Wellness Friend")
+from PIL import Image
+
+im = Image.open("Arogya Mitra.png") # Load the image
+st.set_page_config(page_title="Arogya-Mitra", page_icon=im, layout="centered")
+
+
+try:
+    logo = Image.open("Arogya Mitra.png")
+except FileNotFoundError:
+    st.error("Logo file not found. Please check the path.")
+    st.stop()
+
+# Create two columns: one for the logo and one for the title
+col1, col2 = st.columns([1, 4]) 
+
+# Place the logo in the first column
+with col1:
+    st.image(logo, width=100) # You can adjust the width as needed
+
+# Place the title in the second column
+with col2:
+    st.header("Arogya-Mitra: Your Mental Wellness Friend")
+
 
 # Initialize chat history in a Streamlit session state
 if "messages" not in st.session_state:
@@ -70,23 +93,19 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # --- Main chat input and logic ---
-# ... (all your existing imports and helper functions) ...
-
-# --- Main chat input and logic ---
 if user_input := st.chat_input("How can I help you today?"):
-    # Add user message to chat history
+    # Add user message to chat history and display it
     st.session_state.messages.append({"role": "user", "content": user_input})
     with st.chat_message("user"):
         st.markdown(user_input)
 
-    # Use a container for the assistant's response to keep things clean
+    # Use a placeholder for the assistant's response to avoid duplication
+    # The response will be written to this placeholder.
     with st.chat_message("assistant"):
-        # Place the spinner here to indicate the AI is thinking
-        # The spinner will display until the code block is finished
-        with st.spinner("Arogya-Mitra is thinking..."): 
+        with st.spinner("Arogya-Mitra is thinking..."):
             # Handle special commands or crisis detection
             if crisis_detected(user_input):
-                response_text = "If you are in immediate distress or crisis, please seek professional help immediately. You can contact a helpline like **TELE MANAS at 1-800 891 4416**. Your life is valuable, and help is available."
+                response_text = "If you are in immediate distress or crisis, please seek professional help immediately. You can contact a helpline like **TELE MANAS at 14416 or 1-800 891 4416**. Your life is valuable, and help is available."
             elif "journal prompt" in user_input.lower():
                 prompt_problem = user_input.replace("journal prompt", "").strip()
                 response_text = generate_journal_prompt(prompt_problem or "stress")
@@ -106,8 +125,9 @@ if user_input := st.chat_input("How can I help you today?"):
                     st.error(f"An error occurred: {e}")
                     response_text = "I'm sorry, I'm having trouble responding right now. Please try again."
 
-            # Display the generated response
+            # Display the generated response using st.markdown
             st.markdown(response_text)
 
-    # Add the assistant's response to chat history after it's been generated
+    # Add the assistant's response to chat history after it's been generated and displayed.
+    # This prevents duplication on the next rerun.
     st.session_state.messages.append({"role": "assistant", "content": response_text})
