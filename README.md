@@ -43,3 +43,6 @@ Scalability: The AI-powered nature of Arogya-Mitra ensures it is infinitely scal
 Feasibility: The prototype has been successfully developed and tested, demonstrating the seamless integration of our core features. The use of a simple secrets.toml file ensures secure handling of the API key, making the project ready for deployment.
 
 Arogya-Mitra addresses a critical need in a unique, culturally-sensitive, and technologically advanced manner. We are confident that it can have a profound positive impact on the lives of young people, helping to destigmatize mental health and foster a healthier, happier community.
+
+Made with Love ❤️
+Sneha Murali
